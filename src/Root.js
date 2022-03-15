@@ -7,18 +7,18 @@ const Home = lazy(() => import('./screens/Home'));
 const Dashboard = lazy(() => import('./screens/Dashboard'));
 const NotFound = lazy(() => import('./screens/404'));
 
-export default function Root(props) {
+export default function Root() {
 	return (
 		<>
-			<Navbar {...props} />
+			<Navbar />
 			<ErrorBoundary>
 				<Suspense fallback={<div>Loading...</div>}>
 					<BrowserRouter>
 						<Routes>
-							<Route path='/dashboard' element={<Dashboard {...props} />} />
-							<Route exact path='/' element={<Home {...props} />} />
+							<Route path='/dashboard' element={<Dashboard />} />
+							<Route exact path='/' element={<Home />} />
 
-							<Route path='*' element={<NotFound {...props} />} />
+							<Route path='*' element={<NotFound />} />
 						</Routes>
 					</BrowserRouter>
 				</Suspense>
