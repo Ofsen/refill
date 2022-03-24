@@ -10,10 +10,10 @@ const NotFound = lazy(() => import('./screens/404'));
 export default function Root() {
 	return (
 		<>
-			<Navbar />
 			<ErrorBoundary>
 				<Suspense fallback={<div>Loading...</div>}>
 					<BrowserRouter>
+						<Navbar />
 						<Routes>
 							<Route path='/dashboard' element={<Dashboard />} />
 							<Route exact path='/' element={<Home />} />

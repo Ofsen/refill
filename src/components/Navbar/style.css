@@ -10,6 +10,14 @@ nav .logo {
 	font-weight: 900;
 }
 
+nav .logo a {
+	text-decoration: none;
+}
+
+nav .logo a:visited {
+	color: #1b1833;
+}
+
 nav .logo span {
 	font-weight: 300;
 	color: #78bd80;
@@ -23,6 +31,10 @@ nav ul {
 nav ul li {
 	list-style: none;
 	margin-left: 2rem;
+}
+
+nav ul li.flashy a {
+	color: #78bd80;
 }
 
 nav ul li a {
