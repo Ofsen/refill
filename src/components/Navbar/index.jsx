@@ -7,13 +7,14 @@ const data = [
 		link: '/',
 	},
 	{
-		title: 'Recharge',
+		title: 'Dashboard',
 		link: '/dashboard',
 	},
 ];
 
 export default function Navbar() {
 	const location = useLocation();
+
 	return (
 		<nav>
 			<h2 className='logo'>
@@ -24,7 +25,7 @@ export default function Navbar() {
 			<ul>
 				{data.map((e, index) => {
 					return (
-						<li className={location.pathname === e.link ? 'flashy' : ''} key={index}>
+						<li className={location && location.pathname === e.link ? 'flashy' : ''} key={index}>
 							<Link to={e.link}>{e.title}</Link>
 						</li>
 					);

@@ -11,17 +11,17 @@ export default function Root() {
 	return (
 		<>
 			<ErrorBoundary>
-				<Suspense fallback={<div>Loading...</div>}>
-					<BrowserRouter>
-						<Navbar />
+				<BrowserRouter>
+					<Navbar />
+					<Suspense fallback={<div>Loading...</div>}>
 						<Routes>
 							<Route path='/dashboard' element={<Dashboard />} />
 							<Route exact path='/' element={<Home />} />
 
 							<Route path='*' element={<NotFound />} />
 						</Routes>
-					</BrowserRouter>
-				</Suspense>
+					</Suspense>
+				</BrowserRouter>
 			</ErrorBoundary>
 		</>
 	);

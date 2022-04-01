@@ -1,0 +1,125 @@
+.home {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	place-items: center;
+	background-color: #f9fcf7;
+	z-index: 0;
+}
+
+.home::before {
+	background-image: url('../../assets/img/stripy-128.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position-x: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 100vw;
+	height: 100vh;
+	content: '';
+	z-index: -1;
+	opacity: 0.2;
+}
+
+.centerStuff,
+.refillButton {
+	text-transform: uppercase;
+}
+
+.centerStuff {
+	margin-top: -2rem;
+}
+
+.centerStuff h1 {
+	font-weight: 900;
+	font-size: 4rem;
+	text-align: center;
+	padding: 0 2rem;
+	margin-bottom: 4rem;
+}
+
+.pay {
+	color: #1088cc;
+}
+
+.sera {
+	color: #dc6005;
+}
+
+.wise {
+	color: #1ca5d0;
+}
+
+button.refillButton {
+	background: #1b1833;
+	color: white;
+	font-weight: 900;
+	border: none;
+	border-radius: 1rem;
+	padding: 1.5rem 3rem 2rem 3rem;
+	cursor: pointer;
+	margin: 0 auto;
+	display: block;
+}
+
+button.refillButton:hover {
+	background: #181f33;
+}
+
+button.refillButton p,
+button.refillButton h2 {
+	margin: 0;
+}
+
+button.refillButton h2 {
+	font-size: 2.5rem;
+	font-weight: 900;
+	line-height: 2rem;
+}
+
+.footerStuff {
+	margin: 2rem 0;
+	font-weight: 700;
+}
+
+@media (max-width: 900px) {
+	.centerStuff h1 {
+		font-size: 3rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.centerStuff h1 {
+		font-size: 2rem;
+	}
+
+	button.refillButton h2 {
+		font-size: 2rem;
+	}
+
+	.footerStuff {
+		font-size: 0.75rem;
+	}
+}
+
+@media (max-width: 500px) {
+	.container {
+		padding: 0 2rem;
+	}
+}
+
+@media (max-width: 460px) {
+	.container {
+		padding: 0;
+	}
+
+	.centerStuff h1 {
+		padding: 0 1rem;
+		font-size: 1.5rem;
+	}
+
+	button.refillButton {
+		margin: 0 1rem;
+	}
+}

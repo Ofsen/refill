@@ -6,6 +6,17 @@ body {
 	color: #1b1833;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	position: relative;
+}
+
+a {
+	color: #78bd80;
+}
+
+#root {
+	display: grid;
+	grid-template-rows: auto 1fr;
+	height: 100vh;
 }
 
 .container {
