@@ -6,10 +6,6 @@ const data = [
 		title: 'Accueil',
 		link: '/',
 	},
-	{
-		title: 'Dashboard',
-		link: '/dashboard',
-	},
 ];
 
 export default function Navbar() {

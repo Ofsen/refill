@@ -81,6 +81,7 @@ button.refillButton h2 {
 .footerStuff {
 	margin: 2rem 0;
 	font-weight: 700;
+	text-align: center;
 }
 
 @media (max-width: 900px) {
