@@ -44,6 +44,7 @@ const CMDInput = (props) => {
 		value = null,
 		type = 'text',
 		adornment = null,
+		required = false,
 	} = props;
 	const classes = useStyles(props);
 
@@ -52,16 +53,20 @@ const CMDInput = (props) => {
 	};
 
 	return (
-		<FormControl className={classes.root} variant={variant} fullWidth={full}>
-			<InputLabel htmlFor={id}>{label}</InputLabel>
+		<FormControl required={required} className={classes.root} variant={variant} fullWidth={full}>
+			<InputLabel required={required} htmlFor={id}>
+				{label}
+			</InputLabel>
 			<OutlinedInput
 				className={classes.input}
 				id={id}
+				required={required}
 				value={value || text}
 				label={label}
 				name={name}
 				type={type === 'password' && viewPassword ? 'text' : type}
 				onChange={handleChange || handleLocalChange}
+				startAdornment={type === 'tel' && <InputAdornment position='start'>+213</InputAdornment>}
 				endAdornment={
 					type === 'password' ? (
 						<InputAdornment position='end'>

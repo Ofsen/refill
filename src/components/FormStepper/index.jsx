@@ -7,10 +7,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 
-import { RFButton, RFInput } from '../';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import { RFInput } from '../';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import * as pallete from '../pallete';
+
+import axios from 'axios';
 
 const steps = ['Montant', 'Informations', 'Pièce(s) jointe(s)', 'Finalisation'];
 
@@ -66,6 +67,20 @@ export default function FormStepper() {
 		setForm({});
 	};
 
+	const handleSubmit = () => {
+		axios
+			.post('https://refill-server.herokuapp.com/api/commandes', form)
+			.then(({ data }) => {
+				if (data.error === null) {
+				}
+				console.log(data);
+				handleNext();
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+
 	return (
 		<Box sx={{ width: '100%' }}>
 			{activeStep === steps.length ? (
@@ -112,14 +127,78 @@ export default function FormStepper() {
 					{activeStep !== steps.length && (
 						<React.Fragment>
 							{activeStep === 0 && (
-								<Grid sx={{ mt: 2, mb: 1 }}>
+								<Grid container sx={{ mt: 2, mb: 1 }}>
 									<RFInput
 										handleChange={handleForm}
 										value={form.montant}
-										label='Montant'
+										name='montant'
+										label='Montant voulu'
+										type='number'
 										full
 										adornment='€'
+										required
 									/>
+								</Grid>
+							)}
+							{activeStep === 1 && (
+								<Grid container columnSpacing={4} rowSpacing={1} sx={{ mt: 2, mb: 1 }}>
+									<Grid item xs={12} md={6}>
+										<RFInput
+											handleChange={handleForm}
+											value={form.nom}
+											name='nom'
+											label='Nom'
+											full
+											required
+										/>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<RFInput
+											handleChange={handleForm}
+											value={form.prenom}
+											name='prenom'
+											label='Prenom'
+											full
+											required
+										/>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<RFInput
+											handleChange={handleForm}
+											value={form.tel}
+											name='tel'
+											label='Numéro de téléphone'
+											type='tel'
+											full
+											required
+										/>
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<RFInput
+											handleChange={handleForm}
+											value={form.email}
+											name='email'
+											type='email'
+											label='E-mail'
+											full
+										/>
+									</Grid>
+								</Grid>
+							)}
+							{activeStep === 2 && (
+								<Grid container sx={{ mt: 2, mb: 1 }}>
+									<RFInput handleChange={handleForm} value={form.photo} label='' type='file' full />
+								</Grid>
+							)}
+							{activeStep === 3 && (
+								<Grid container sx={{ mt: 2, mb: 1 }} justifyContent='center' alignItems='center'>
+									<Typography variant='h5' sx={{ textAlign: 'center' }}>
+										Commande d'un montant de <strong>{form.montant}€</strong>, pour{' '}
+										<strong>
+											{form.nom !== undefined && form.nom.toUpperCase()} {form.prenom}
+										</strong>
+										.
+									</Typography>
 								</Grid>
 							)}
 							<Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -133,7 +212,16 @@ export default function FormStepper() {
 										Passer
 									</Button>
 								)}
-								<Button variant='contained' onClick={handleNext}>
+								<Button
+									variant='contained'
+									onClick={() => {
+										if (activeStep === steps.length - 1) {
+											return handleSubmit();
+										} else {
+											return handleNext();
+										}
+									}}
+								>
 									{activeStep === steps.length - 1 ? 'Commander' : 'Suivant'}
 								</Button>
 							</Box>

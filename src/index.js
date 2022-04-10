@@ -4,9 +4,14 @@ import './index.css';
 import Root from './Root';
 import reportWebVitals from './reportWebVitals';
 
+import { ThemeProvider } from '@mui/styles';
+import theme from './config/theme';
+
 ReactDOM.render(
 	<React.StrictMode>
-		<Root />
+		<ThemeProvider theme={theme}>
+			<Root />
+		</ThemeProvider>
 	</React.StrictMode>,
 	document.getElementById('root')
 );

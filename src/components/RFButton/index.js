@@ -3,12 +3,8 @@ import styled from '@emotion/styled';
 
 import * as pallette from '../pallete';
 
-const CMDButton = ({ handleClick = null, label = 'Button', primary = false, full = false }) => {
-	return (
-		<Button primary={primary} full={full} onClick={handleClick}>
-			{label}
-		</Button>
-	);
+const CMDButton = (props) => {
+	return <Button {...props}>{props.children}</Button>;
 };
 
 const Button = styled.button`
