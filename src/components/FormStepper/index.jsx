@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 
 import { isValidPhone } from '../../config/helpers';
 
-const steps = ['Montant', 'Informations', 'Pièce(s) jointe(s)', 'Finalisation'];
+const steps = ['Montant', 'Informations', 'Pièce jointe', 'Finalisation'];
 
 export default function FormStepper() {
 	const [activeStep, setActiveStep] = React.useState(0);
@@ -123,7 +123,12 @@ export default function FormStepper() {
 	}, [activeStep, form]);
 
 	return (
-		<Box sx={{ width: '100%' }}>
+		<Box
+			sx={{
+				width: '100%',
+				my: 4,
+			}}
+		>
 			{activeStep === steps.length ? (
 				<Box sx={{ textAlign: 'center' }}>
 					<Typography sx={{ mt: 4, fontWeight: '700', color: pallete.GREEN }} component='p'>
@@ -142,17 +147,21 @@ export default function FormStepper() {
 				</Box>
 			) : (
 				<>
-					<Typography sx={{ textAlign: 'center', fontWeight: '900', mb: '2rem' }} variant='h3'>
+					<Typography
+						sx={{
+							textAlign: 'center',
+							fontWeight: '900',
+							mb: '2rem',
+							'@media  (max-width: 780px)': { fontSize: '2rem' },
+						}}
+						variant='h3'
+					>
 						JE COMMANDE
 					</Typography>
-					<Stepper activeStep={activeStep}>
+					<Stepper activeStep={activeStep} alternativeLabel>
 						{steps.map((label, index) => {
 							const stepProps = {};
 							const labelProps = {};
-
-							if (isStepOptional(index)) {
-								labelProps.optional = <Typography variant='caption'>Optionnèlle</Typography>;
-							}
 
 							if (isStepSkipped(index)) {
 								stepProps.completed = false;
@@ -160,88 +169,94 @@ export default function FormStepper() {
 
 							return (
 								<Step key={label} {...stepProps}>
-									<StepLabel {...labelProps}>{label}</StepLabel>
+									<StepLabel {...labelProps}>
+										{label}
+										{index !== 3 && index !== 2 ? ' *' : ''}
+									</StepLabel>
 								</Step>
 							);
 						})}
 					</Stepper>
 					{activeStep !== steps.length && (
-						<React.Fragment>
-							{activeStep === 0 && (
-								<Grid container sx={{ mt: 2, mb: 1 }}>
-									<RFInput
-										handleChange={handleForm}
-										value={form.montant}
-										name='montant'
-										label='Montant voulu'
-										type='number'
-										full
-										adornment='€'
-										required
-									/>
-								</Grid>
-							)}
-							{activeStep === 1 && (
-								<Grid container columnSpacing={4} rowSpacing={1} sx={{ mt: 2, mb: 1 }}>
+						<>
+							<Grid container columnSpacing={4} justifyContent='center' rowSpacing={1} sx={{ mt: 4, mb: 1 }}>
+								{activeStep === 0 && (
 									<Grid item xs={12} md={6}>
 										<RFInput
 											handleChange={handleForm}
-											value={form.nom}
-											name='nom'
-											label='Nom'
+											value={form.montant}
+											name='montant'
+											label='Montant voulu'
+											type='number'
 											full
+											adornment='€'
 											required
 										/>
 									</Grid>
+								)}
+								{activeStep === 1 && (
+									<>
+										<Grid item xs={12} md={6}>
+											<RFInput
+												handleChange={handleForm}
+												value={form.nom}
+												name='nom'
+												label='Nom'
+												full
+												required
+											/>
+										</Grid>
+										<Grid item xs={12} md={6}>
+											<RFInput
+												handleChange={handleForm}
+												value={form.prenom}
+												name='prenom'
+												label='Prenom'
+												full
+												required
+											/>
+										</Grid>
+										<Grid item xs={12} md={6}>
+											<RFInput
+												handleChange={handleForm}
+												value={form.tel}
+												name='tel'
+												label='Numéro de téléphone'
+												type='tel'
+												full
+												required
+											/>
+										</Grid>
+										<Grid item xs={12} md={6}>
+											<RFInput
+												handleChange={handleForm}
+												value={form.email}
+												name='email'
+												type='email'
+												label='E-mail'
+												full
+											/>
+										</Grid>
+									</>
+								)}
+								{activeStep === 2 && (
 									<Grid item xs={12} md={6}>
-										<RFInput
-											handleChange={handleForm}
-											value={form.prenom}
-											name='prenom'
-											label='Prenom'
-											full
-											required
-										/>
+										<RFInput handleChange={handleFile} value={form.photo} name='photo' type='file' full />
 									</Grid>
+								)}
+								{activeStep === 3 && (
 									<Grid item xs={12} md={6}>
-										<RFInput
-											handleChange={handleForm}
-											value={form.tel}
-											name='tel'
-											label='Numéro de téléphone'
-											type='tel'
-											full
-											required
-										/>
+										<Typography variant='h5' sx={{ textAlign: 'center' }}>
+											Commande d'un montant de <strong>{form.montant}€</strong>, pour{' '}
+											<strong>
+												{form.nom !== undefined && form.nom.toUpperCase()} {form.prenom}
+											</strong>
+											.
+										</Typography>
 									</Grid>
-									<Grid item xs={12} md={6}>
-										<RFInput
-											handleChange={handleForm}
-											value={form.email}
-											name='email'
-											type='email'
-											label='E-mail'
-											full
-										/>
-									</Grid>
-								</Grid>
-							)}
-							{activeStep === 2 && (
-								<Grid container sx={{ mt: 2, mb: 1 }}>
-									<RFInput handleChange={handleFile} value={form.photo} name='photo' type='file' full />
-								</Grid>
-							)}
-							{activeStep === 3 && (
-								<Grid container sx={{ mt: 2, mb: 1 }} justifyContent='center' alignItems='center'>
-									<Typography variant='h5' sx={{ textAlign: 'center' }}>
-										Commande d'un montant de <strong>{form.montant}€</strong>, pour{' '}
-										<strong>
-											{form.nom !== undefined && form.nom.toUpperCase()} {form.prenom}
-										</strong>
-										.
-									</Typography>
-								</Grid>
-							)}
+								)}
+							</Grid>
+
 							<Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
 								<Button color='inherit' disabled={activeStep === 0} onClick={handleBack} sx={{ mr: 1 }}>
 									Retour
@@ -267,10 +282,22 @@ export default function FormStepper() {
 									{activeStep === steps.length - 1 ? 'Commander' : 'Suivant'}
 								</Button>
 							</Box>
-						</React.Fragment>
+						</>
 					)}
 				</>
 			)}
+			<ul>
+				<li>
+					<Typography variant='caption' style={{ textAlign: 'center', fontWeight: 'bold	' }}>
+						Tout champ suivi d'un astérisque (*) est obligatoire.
+					</Typography>
+				</li>
+				<li>
+					<Typography variant='caption' style={{ textAlign: 'center', fontWeight: 'bold	' }}>
+						Toute commande sera réglé dans un délais d’une heure (1h).
+					</Typography>
+				</li>
+			</ul>
 		</Box>
 	);
 }

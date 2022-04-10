@@ -88,6 +88,10 @@ button.refillButton h2 {
 	.centerStuff h1 {
 		font-size: 3rem;
 	}
+
+	.MuiStepConnector-root {
+		display: none;
+	}
 }
 
 @media (max-width: 600px) {

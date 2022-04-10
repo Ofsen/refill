@@ -17,7 +17,14 @@ const style = {
 	bgcolor: 'background.paper',
 	borderRadius: 4,
 	boxShadow: 24,
-	p: 4,
+	px: 4,
+	maxHeight: '100vh',
+	overflowY: 'scroll',
+
+	'@media (max-width: 780px)': {
+		width: '94%',
+		px: 3,
+	},
 };
 
 export default function Home() {
