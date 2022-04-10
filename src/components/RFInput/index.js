@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-import { IoEye, IoEyeOff } from 'react-icons/io5';
-
 import * as pallette from '../pallete';
 
 const useStyles = makeStyles({
@@ -68,21 +66,7 @@ const CMDInput = (props) => {
 				onChange={handleChange || handleLocalChange}
 				startAdornment={type === 'tel' && <InputAdornment position='start'>+213</InputAdornment>}
 				endAdornment={
-					type === 'password' ? (
-						<InputAdornment position='end'>
-							<IconButton
-								className={classes.icon}
-								aria-label='toggle password visibility'
-								onClick={() => setViewPassword(!viewPassword)}
-								onMouseDown={(e) => e.preventDefault()}
-								edge='end'
-							>
-								{viewPassword ? <IoEyeOff /> : <IoEye />}
-							</IconButton>
-						</InputAdornment>
-					) : (
-						adornment !== null && <InputAdornment position='end'>{adornment}</InputAdornment>
-					)
+					type !== 'password' && adornment !== null && <InputAdornment position='end'>{adornment}</InputAdornment>
 				}
 			/>
 		</FormControl>
