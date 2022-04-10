@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
+import { FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import * as pallette from '../pallete';
@@ -30,7 +30,6 @@ const useStyles = makeStyles({
 
 const CMDInput = (props) => {
 	const [text, setText] = useState('');
-	const [viewPassword, setViewPassword] = useState(false);
 
 	const {
 		label = 'Text',
@@ -50,6 +49,26 @@ const CMDInput = (props) => {
 		setText(e.target.value);
 	};
 
+	if (type === 'file') {
+		return (
+			<FormControl required={required} className={classes.root} variant={variant} fullWidth={full}>
+				<OutlinedInput
+					className={classes.input}
+					id={id}
+					required={required}
+					value={value}
+					name={name}
+					type={type}
+					onChange={handleChange || handleLocalChange}
+					startAdornment={type === 'tel' && <InputAdornment position='start'>+213</InputAdornment>}
+					endAdornment={
+						type !== 'password' && adornment !== null && <InputAdornment position='end'>{adornment}</InputAdornment>
+					}
+				/>
+			</FormControl>
+		);
+	}
+
 	return (
 		<FormControl required={required} className={classes.root} variant={variant} fullWidth={full}>
 			<InputLabel required={required} htmlFor={id}>
@@ -62,7 +81,7 @@ const CMDInput = (props) => {
 				value={value || text}
 				label={label}
 				name={name}
-				type={type === 'password' && viewPassword ? 'text' : type}
+				type={type}
 				onChange={handleChange || handleLocalChange}
 				startAdornment={type === 'tel' && <InputAdornment position='start'>+213</InputAdornment>}
 				endAdornment={

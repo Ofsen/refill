@@ -12,6 +12,9 @@ import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlin
 import * as pallete from '../pallete';
 
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+import { isValidPhone } from '../../config/helpers';
 
 const steps = ['Montant', 'Informations', 'Pièce(s) jointe(s)', 'Finalisation'];
 
@@ -19,9 +22,16 @@ export default function FormStepper() {
 	const [activeStep, setActiveStep] = React.useState(0);
 	const [skipped, setSkipped] = React.useState(new Set());
 
-	const [form, setForm] = React.useState({});
+	const [form, setForm] = React.useState({ photo: '' });
+	const [file, setFile] = React.useState({});
 	const handleForm = (e) => {
 		setForm({ ...form, [e.target.name]: e.target.value });
+	};
+	const handleFile = (e) => {
+		setForm({ ...form, photo: e.target.value });
+
+		const file = e.target.files[0];
+		setFile(file);
 	};
 
 	const isStepOptional = (step) => {
@@ -64,22 +74,53 @@ export default function FormStepper() {
 
 	const handleReset = () => {
 		setActiveStep(0);
-		setForm({});
+		setForm({ photo: '' });
 	};
 
 	const handleSubmit = () => {
+		const formData = new FormData();
+		formData.append('file', file);
+
+		const array = Object.entries(form);
+		array.map((e) => formData.append(e[0], e[1]));
+		formData.append('photoName', file.name);
+
 		axios
 			.post('https://refill-server.herokuapp.com/api/commandes', form)
 			.then(({ data }) => {
 				if (data.error === null) {
+					handleNext();
+					toast.success('Commande enregistrée!');
+				} else {
+					toast.error("Erreur lors de l'enregistrement de la commande.");
 				}
-				console.log(data);
-				handleNext();
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
+
+	const disableNext = React.useMemo(() => {
+		switch (activeStep) {
+			case 0:
+				if (form.montant === undefined || parseInt(form.montant) <= 0) return true;
+				break;
+			case 1:
+				if (
+					form.nom === undefined ||
+					form.nom.trim().length <= 0 ||
+					form.prenom === undefined ||
+					form.prenom.trim().length <= 0 ||
+					form.tel === undefined ||
+					!isValidPhone.test(form.tel)
+				)
+					return true;
+				break;
+
+			default:
+				return false;
+		}
+	}, [activeStep, form]);
 
 	return (
 		<Box sx={{ width: '100%' }}>
@@ -187,7 +228,7 @@ export default function FormStepper() {
 							)}
 							{activeStep === 2 && (
 								<Grid container sx={{ mt: 2, mb: 1 }}>
-									<RFInput handleChange={handleForm} value={form.photo} label='' type='file' full />
+									<RFInput handleChange={handleFile} value={form.photo} name='photo' type='file' full />
 								</Grid>
 							)}
 							{activeStep === 3 && (
@@ -214,6 +255,7 @@ export default function FormStepper() {
 								)}
 								<Button
 									variant='contained'
+									disabled={disableNext}
 									onClick={() => {
 										if (activeStep === steps.length - 1) {
 											return handleSubmit();
