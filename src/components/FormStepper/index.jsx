@@ -86,7 +86,9 @@ export default function FormStepper() {
 		formData.append('photoName', file.name);
 
 		axios
-			.post('https://refill-server.herokuapp.com/api/commandes', form)
+			.post('https://refill-server.herokuapp.com/api/commandes', formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
 			.then(({ data }) => {
 				if (data.error === null) {
 					handleNext();
