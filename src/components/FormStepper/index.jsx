@@ -87,7 +87,7 @@ export default function FormStepper() {
 
 		axios
 			.post('https://refill-server.herokuapp.com/api/commandes', formData, {
-				headers: { 'Content-Type': 'multipart/form-data' },
+				headers: { 'Content-Type': `multipart/form-data; boundary=${formData._boundary}` },
 			})
 			.then(({ data }) => {
 				if (data.error === null) {
